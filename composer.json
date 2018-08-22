@@ -1,0 +1,27 @@
+{
+  "name": "johncorrelli/php-daydifference",
+  "type": "library",
+  "description": "Finds the number of days between two dates, with exclusions, such as day of the week and/or holidays.",
+  "authors": [
+    {
+      "name": "John Correlli",
+      "email": "johncorrelli@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "johncorrelli\\": "src"
+    }
+  },
+  "config": {
+    "platform": {
+      "php": "7.1"
+    }
+  },
+  "require": {
+      "php": "^5.3.3 || ^7.0"
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "2.12.1"
+  }
+}
