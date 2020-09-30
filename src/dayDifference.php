@@ -32,22 +32,19 @@ class dayDifference
     {
         if ($this->startDate <= $this->endDate) {
             $isNegative = false;
-            $startDate = $this->startDate;
-            $endDate = $this->endDate;
+            $trueStartDate = $this->startDate;
+            $trueEndDate = $this->endDate;
         } else {
             // REVERSE THE DAYS BECAUSE IT'S NEGATIVE
             $isNegative = true;
-            $startDate = $this->endDate;
-            $endDate = $this->startDate;
+            $trueStartDate = $this->endDate;
+            $trueEndDate = $this->startDate;
         }
 
-        $allowedDaysOfTheWeek = $this->allowedDaysOfTheWeek;
-        $excludedDates = $this->excludedDates;
+        $totalDays = $this->totalDays($trueStartDate, $trueEndDate);
+        $daysCovered = $this->daysCovered($trueStartDate, $trueEndDate);
 
-        $totalDays = $this->totalDays($startDate, $endDate);
-        $daysCovered = $this->daysCovered($startDate, $endDate);
-
-        $dayDifference = $this->totalDaysWithExclusions($totalDays, $daysCovered, $allowedDaysOfTheWeek, $excludedDates);
+        $dayDifference = $this->totalDaysWithExclusions($totalDays, $daysCovered, $this->allowedDaysOfTheWeek, $this->excludedDates);
 
         if ($isNegative) {
             $dayDifference = $dayDifference * -1;
