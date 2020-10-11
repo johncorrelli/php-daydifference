@@ -1,12 +1,11 @@
 <?php
 
-use johncorrelli\dayDifference;
-use DateTime;
+use johncorrelli\DayDifference;
 
-describe('dayDifference', function() {
+describe('DayDifference', function() {
     function getDiff(DateTimeInterface $startDate, DateTimeInterface $endDate, array $daysOfTheWeek, array $excludedDays)
     {
-        $diff = new dayDifference($startDate, $endDate, $daysOfTheWeek, $excludedDays);
+        $diff = new DayDifference($startDate, $endDate, $daysOfTheWeek, $excludedDays);
 
         return $diff->difference();
     }
@@ -51,7 +50,7 @@ describe('dayDifference', function() {
         expect(getDiff($startDate, $endDate, [0, 1,       4, 5, 6], []))->toBe(5);
         expect(getDiff($startDate, $endDate, [0, 1, 2,       5, 6], []))->toBe(5);
         expect(getDiff($startDate, $endDate, [0, 1, 2, 3,       6], []))->toBe(5);
-        expect(getDiff($startDate, $endDate, [0, 1, 2, 3, 4,     ], []))->toBe(5);
+        expect(getDiff($startDate, $endDate, [0, 1, 2, 3, 4      ], []))->toBe(5);
 
         expect(getDiff($startDate, $endDate, [0], []))->toBe(1);
         expect(getDiff($startDate, $endDate, [1], []))->toBe(1);
