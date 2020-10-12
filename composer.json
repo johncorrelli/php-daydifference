@@ -15,13 +15,21 @@
   },
   "config": {
     "platform": {
-      "php": "7.1"
+      "php": "7.4"
     }
   },
   "require": {
-      "php": "^5.3.3 || ^7.0"
+      "php": "^7.4"
   },
   "require-dev": {
-    "friendsofphp/php-cs-fixer": "2.12.1"
+    "friendsofphp/php-cs-fixer": "^2.16.4",
+    "kahlan/kahlan": "^4.7",
+    "phpstan/phpstan": "^0.12.48"
+  },
+  "scripts": {
+    "standards": "php ./vendor/bin/php-cs-fixer fix --dry-run ./src --rules=@PhpCsFixer,-yoda_style",
+    "standards:fix": "php ./vendor/bin/php-cs-fixer fix ./src --rules=@PhpCsFixer,-yoda_style",
+    "static": "php ./vendor/bin/phpstan analyse src --level 8",
+    "test": "kahlan --src=src/ --spec=spec"
   }
 }
