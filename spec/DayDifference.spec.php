@@ -114,8 +114,14 @@ describe('DayDifference', function() {
             '2020-10-10',
         ];
 
-        for ($i = 1; $i <= 1000; $i++) {
+        for ($i = 1; $i <= 3000; $i++) {
             expect(getDiff($startDate, $endDate, [0, 1, 2, 3, 4, 5, 6], $holidays))->toBe(365 - count($holidays));
+        }
+        for ($i = 1; $i <= 3000; $i++) {
+            expect(getDiff($startDate, $endDate, [0, 1, 2, 3, 4, 5, 6], []))->toBe(365);
+        }
+        for ($i = 1; $i <= 3000; $i++) {
+            expect(getDiff($startDate, $endDate, [2], [$holidays[0]]))->toBe(52);
         }
     });
 });
