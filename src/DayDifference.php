@@ -9,7 +9,7 @@ class DayDifference
     /**
      * Number of seconds in one day.
      */
-    const ONE_DAY = 86400;
+    const SECONDS_IN_ONE_DAY = 86400;
 
     /**
      * @var array<int> 0-6 representation of days of the week, where 0 = Sunday, and 6 = Saturday
@@ -49,16 +49,16 @@ class DayDifference
         $isPositive = $this->startDate <= $this->endDate;
 
         if ($isPositive) {
-            $multiply = 1;
             $startStamp = $this->startDate->getTimestamp();
             $endStamp = $this->endDate->getTimestamp();
-        } else {
-            $multiply = -1;
-            $startStamp = $this->endDate->getTimestamp();
-            $endStamp = $this->startDate->getTimestamp();
+
+            return $this->findDifference($startStamp, $endStamp, $this->allowedDaysOfTheWeek, $this->excludedDates);
         }
 
-        return $this->findDifference($startStamp, $endStamp, $this->allowedDaysOfTheWeek, $this->excludedDates) * $multiply;
+        $startStamp = $this->endDate->getTimestamp();
+        $endStamp = $this->startDate->getTimestamp();
+
+        return $this->findDifference($startStamp, $endStamp, $this->allowedDaysOfTheWeek, $this->excludedDates) * -1;
     }
 
     /**
@@ -71,41 +71,40 @@ class DayDifference
     {
         $isFullWeek = count($allowedDaysOfTheWeek) === 7;
         $hasExclusions = !empty($excludedDates);
+        $totalDays = ($endStamp - $startStamp) / self::SECONDS_IN_ONE_DAY;
+
+        if ($isFullWeek && !$hasExclusions) {
+            return $totalDays;
+        }
+
         $currentStamp = $startStamp;
-        $totalDays = 0;
-
         while ($currentStamp < $endStamp) {
-            $totalDays += (int) (
-                // the day of the week is allowed
-                ($isFullWeek || $this->isAllowed($currentStamp, $allowedDaysOfTheWeek))
-                // the date is not excluded
-                && (!$hasExclusions || !$this->isExcluded($currentStamp, $excludedDates))
-            );
+            /**
+             * The date() call is expensive when done multiple times. We can now do that conversion once. Then grab the formatted values after that.
+             *
+             * @var string $dateFormats
+             */
+            $dateFormats = date('w,Y-m-d,*-m-d', $currentStamp);
 
-            $currentStamp += self::ONE_DAY;
+            /**
+             * @var string $weekDay the number (in string form) representing the current day
+             * @var string $specificDate Y-m-d format of the current day
+             * @var string $wildcardDate *-m-d format of the current day, to allow for exclusions that repeat every year
+             */
+            [$weekDay, $specificDate, $wildcardDate] = explode(',', $dateFormats);
+
+            // Reduce the total days if the current date in the loop is to be excluded.
+            if (
+                !in_array((int) $weekDay, $allowedDaysOfTheWeek) // Day is skipped because it's not in the $allowedDaysOfTheWeek.
+                || in_array($specificDate, $excludedDates) // Day is skipped because it's a specifically excluded date.
+                || in_array($wildcardDate, $excludedDates) // Day is skipped because the month/day is excluded every year.
+            ) {
+                --$totalDays;
+            }
+
+            $currentStamp += self::SECONDS_IN_ONE_DAY;
         }
 
         return $totalDays;
-    }
-
-    /**
-     * Determines if the day of the week is allowed based off of the supplied allowedDaysOfTheWeek array.
-     *
-     * @param array<int> $allowedDaysOfTheWeek
-     */
-    private function isAllowed(int $timestamp, array $allowedDaysOfTheWeek): bool
-    {
-        return in_array(date('w', $timestamp), $allowedDaysOfTheWeek);
-    }
-
-    /**
-     * Determines if the date is allowed based of excluded dates.
-     *
-     * @param array<string> $excludedDates
-     */
-    private function isExcluded(int $timestamp, array $excludedDates): bool
-    {
-        return in_array(date('Y-m-d', $timestamp), $excludedDates)
-            || in_array(date('*-m-d', $timestamp), $excludedDates);
     }
 }
