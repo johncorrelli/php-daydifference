@@ -71,7 +71,7 @@ class DayDifference
     {
         $isFullWeek = count($allowedDaysOfTheWeek) === 7;
         $hasExclusions = !empty($excludedDates);
-        $totalDays = ($endStamp - $startStamp) / self::SECONDS_IN_ONE_DAY;
+        $totalDays = (int) ceil(($endStamp - $startStamp) / self::SECONDS_IN_ONE_DAY);
 
         if ($isFullWeek && !$hasExclusions) {
             return $totalDays;
