@@ -9,7 +9,7 @@ class DayDifference
     /**
      * Number of seconds in one day.
      */
-    const SECONDS_IN_ONE_DAY = 86400;
+    public const SECONDS_IN_ONE_DAY = 86400;
 
     /**
      * @var array<int> 0-6 representation of days of the week, where 0 = Sunday, and 6 = Saturday
