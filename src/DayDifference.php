@@ -2,8 +2,6 @@
 
 namespace johncorrelli;
 
-use DateTimeInterface;
-
 class DayDifference
 {
     /**
@@ -16,14 +14,14 @@ class DayDifference
      */
     private array $allowedDaysOfTheWeek = [];
 
-    private DateTimeInterface $endDate;
+    private \DateTimeInterface $endDate;
 
     /**
      * @var array<string> YYYY-MM-DD Dates that should not be counted. ie: 2020-01-01 or *-07-04 for dates that repeat each year.
      */
     private array $excludedDates = [];
 
-    private DateTimeInterface $startDate;
+    private \DateTimeInterface $startDate;
 
     /**
      * @var array<int, array<string>> an associative array mapping between timestamps and their exploded date values
@@ -35,8 +33,8 @@ class DayDifference
      * @param array<string> $excludedDates
      */
     public function __construct(
-        DateTimeInterface $startDate,
-        DateTimeInterface $endDate,
+        \DateTimeInterface $startDate,
+        \DateTimeInterface $endDate,
         array $allowedDaysOfTheWeek = [0, 1, 2, 3, 4, 5, 6],
         array $excludedDates = []
     ) {
@@ -49,7 +47,7 @@ class DayDifference
     /**
      * @param array<int, array<string>> $cache
      */
-    static function set_cache($cache): void
+    public static function set_cache($cache): void
     {
         self::$cache = $cache;
     }
@@ -57,7 +55,7 @@ class DayDifference
     /**
      * @return array<int, array<string>>
      */
-    static function get_cache()
+    public static function get_cache()
     {
         return self::$cache;
     }
@@ -106,7 +104,7 @@ class DayDifference
 
         $currentStamp = $startStamp;
         while ($currentStamp < $endStamp) {
-            /**
+            /*
              * The date() call is expensive when done multiple times. We can now do that conversion once. Then grab the formatted values after that.
              *
              * @var string $dateFormats

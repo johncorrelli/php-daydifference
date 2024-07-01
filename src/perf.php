@@ -13,15 +13,15 @@ $n = 2000;
 $start_day_offset = 6000;
 $weekDays = [1, 2, 3, 4, 5];
 $today = new DateTime();
-$holidays = ["*-12-25"];
+$holidays = ['*-12-25'];
 
 // Generate random start and end dates
 for ($i = 0; $i < $n; ++$i) {
     $start_date = new DateTime();
-    $start_date->modify('+' . $start_day_offset + $i . ' days');
+    $start_date->modify('+'.$start_day_offset + $i.' days');
 
     $end_date = clone $start_date;
-    $end_date->modify('+' . ($i % 30) . ' days');
+    $end_date->modify('+'.($i % 30).' days');
 
     $start_dates[] = $start_date;
     $end_dates[] = $end_date;
@@ -42,4 +42,4 @@ for ($i = 0; $i < $n; ++$i) {
 $end_time = microtime(true);
 $total_duration = $end_time - $start_time;
 
-echo 'Total execution time for 2000 iterations: ' . $total_duration . " seconds\n";
+echo 'Total execution time for 2000 iterations: '.$total_duration." seconds\n";
