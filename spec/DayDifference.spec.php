@@ -133,13 +133,13 @@ describe('DayDifference', function() {
     });
 
     it('should set cache when a cache miss', function () {
-        $cache = [1578268800 => ["1", "2020-01-06", "*-01-06"], 1578355200 => ["2", "2020-01-07", "*-01-07"], 1578441600 => ["3", "2020-01-08", "*-01-08"]];
+        expect(DayDifference::get_cache())->not->toBe([1578268800 => ["1", "2020-01-06", "*-01-06"], 1578355200 => ["2", "2020-01-07", "*-01-07"], 1578441600 => ["3", "2020-01-08", "*-01-08"]]);
 
         $startDate = new DateTime('2020-01-06');
         $endDate = new DateTime('2020-01-09');
 
         expect(getDiff($startDate, $endDate, [1, 2, 3, 4, 5], ['*-01-07']))->toBe(2);
-        expect(DayDifference::get_cache())->toBe($cache);
+        expect(DayDifference::get_cache())->toBe([1578268800 => ["1", "2020-01-06", "*-01-06"], 1578355200 => ["2", "2020-01-07", "*-01-07"], 1578441600 => ["3", "2020-01-08", "*-01-08"]]);
     });
 
     it('should persist cache across new instances', function () {
