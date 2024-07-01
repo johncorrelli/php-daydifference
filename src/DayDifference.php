@@ -25,6 +25,9 @@ class DayDifference
 
     private DateTimeInterface $startDate;
 
+    /**
+     * @var array<int, array<string>> an associative array mapping between timestamps and their exploded date values
+     */
     private static array $cache = [];
 
     /**
@@ -35,7 +38,7 @@ class DayDifference
         DateTimeInterface $startDate,
         DateTimeInterface $endDate,
         array $allowedDaysOfTheWeek = [0, 1, 2, 3, 4, 5, 6],
-        array $excludedDates = [],
+        array $excludedDates = []
     ) {
         $this->startDate = $startDate;
         $this->endDate = $endDate;
@@ -43,11 +46,17 @@ class DayDifference
         $this->excludedDates = $excludedDates;
     }
 
-    static function set_cache($cache)
+    /**
+     * @param array<int, array<string>> $cache
+     */
+    static function set_cache($cache): void
     {
         self::$cache = $cache;
     }
 
+    /**
+     * @return array<int, array<string>>
+     */
     static function get_cache()
     {
         return self::$cache;
