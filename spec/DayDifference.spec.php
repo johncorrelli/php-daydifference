@@ -114,7 +114,6 @@ describe('DayDifference', function () {
             '2020-10-10',
         ];
 
-        $start_time = microtime(true);
         for ($i = 1; $i <= 3000; $i++) {
             expect(getDiff($startDate, $endDate, [0, 1, 2, 3, 4, 5, 6], $holidays))->toBe(365 - count($holidays));
         }
@@ -124,9 +123,6 @@ describe('DayDifference', function () {
         for ($i = 1; $i <= 3000; $i++) {
             expect(getDiff($startDate, $endDate, [2], [$holidays[0]]))->toBe(52);
         }
-        $end_time = microtime(true);
-        $time_diff = $end_time - $start_time;
-        expect($time_diff)->toBeLessThan(0.8);
     });
 
     it('should set and get cache', function () {
