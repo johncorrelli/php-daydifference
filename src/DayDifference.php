@@ -104,12 +104,12 @@ class DayDifference
 
         $currentStamp = $startStamp;
         while ($currentStamp < $endStamp) {
-            /*
-             * The date() call is expensive when done multiple times. We can now do that conversion once. Then grab the formatted values after that.
-             *
-             * @var string $dateFormats
-             */
             if (!isset(self::$cache[$currentStamp])) {
+                /*
+                * The date() call is expensive when done multiple times. We can now do that conversion once. Then grab the formatted values after that.
+                *
+                * @var string $dateFormats
+                */
                 $dateFormats = date('w,Y-m-d,*-m-d', $currentStamp);
 
                 /**
