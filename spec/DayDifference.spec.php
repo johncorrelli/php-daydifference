@@ -2,7 +2,7 @@
 
 use johncorrelli\DayDifference;
 
-describe('DayDifference', function() {
+describe('DayDifference', function () {
     function getDiff(DateTimeInterface $startDate, DateTimeInterface $endDate, array $daysOfTheWeek, array $excludedDays)
     {
         $diff = new DayDifference($startDate, $endDate, $daysOfTheWeek, $excludedDays);
@@ -10,7 +10,7 @@ describe('DayDifference', function() {
         return $diff->difference();
     }
 
-    it('should return 0 when start and end date are the same', function() {
+    it('should return 0 when start and end date are the same', function () {
         $startDate = new DateTime();
 
         for ($i = 1; $i < 10; $i++) {
@@ -18,14 +18,14 @@ describe('DayDifference', function() {
         }
     });
 
-    it('should handle negative dates', function() {
+    it('should handle negative dates', function () {
         $startDate = new DateTime();
         $endDate = new DateTime("-1 day");
 
         expect(getDiff($startDate, $endDate, [0, 1, 2, 3, 4, 5, 6], []))->toBe(-1);
     });
 
-    it('should handle relative dates without excluded dates', function() {
+    it('should handle relative dates without excluded dates', function () {
         $startDate = new DateTime();
 
         for ($i = 1; $i < 10; $i++) {
@@ -33,24 +33,24 @@ describe('DayDifference', function() {
         }
     });
 
-    it('should handle skipping specific days of the week', function() {
+    it('should handle skipping specific days of the week', function () {
         $startDate = new DateTime('2020-01-06');
         $endDate = new DateTime('2020-01-13');
 
-        expect(getDiff($startDate, $endDate, [   1, 2, 3, 4, 5, 6], []))->toBe(6);
+        expect(getDiff($startDate, $endDate, [1, 2, 3, 4, 5, 6], []))->toBe(6);
         expect(getDiff($startDate, $endDate, [0,    2, 3, 4, 5, 6], []))->toBe(6);
         expect(getDiff($startDate, $endDate, [0, 1,    3, 4, 5, 6], []))->toBe(6);
         expect(getDiff($startDate, $endDate, [0, 1, 2,    4, 5, 6], []))->toBe(6);
         expect(getDiff($startDate, $endDate, [0, 1, 2, 3,    5, 6], []))->toBe(6);
         expect(getDiff($startDate, $endDate, [0, 1, 2, 3, 4,    6], []))->toBe(6);
-        expect(getDiff($startDate, $endDate, [0, 1, 2, 3, 4, 5   ], []))->toBe(6);
+        expect(getDiff($startDate, $endDate, [0, 1, 2, 3, 4, 5], []))->toBe(6);
 
-        expect(getDiff($startDate, $endDate, [      2, 3, 4, 5, 6], []))->toBe(5);
+        expect(getDiff($startDate, $endDate, [2, 3, 4, 5, 6], []))->toBe(5);
         expect(getDiff($startDate, $endDate, [0,       3, 4, 5, 6], []))->toBe(5);
         expect(getDiff($startDate, $endDate, [0, 1,       4, 5, 6], []))->toBe(5);
         expect(getDiff($startDate, $endDate, [0, 1, 2,       5, 6], []))->toBe(5);
         expect(getDiff($startDate, $endDate, [0, 1, 2, 3,       6], []))->toBe(5);
-        expect(getDiff($startDate, $endDate, [0, 1, 2, 3, 4      ], []))->toBe(5);
+        expect(getDiff($startDate, $endDate, [0, 1, 2, 3, 4], []))->toBe(5);
 
         expect(getDiff($startDate, $endDate, [0], []))->toBe(1);
         expect(getDiff($startDate, $endDate, [1], []))->toBe(1);
@@ -61,42 +61,42 @@ describe('DayDifference', function() {
         expect(getDiff($startDate, $endDate, [6], []))->toBe(1);
     });
 
-    it('should handle skipping weekends', function() {
+    it('should handle skipping weekends', function () {
         $startDate = new DateTime('2020-01-06');
         $endDate = new DateTime('2020-01-13');
 
         expect(getDiff($startDate, $endDate, [1, 2, 3, 4, 5], []))->toBe(5);
     });
 
-    it('should handle skipping specific dates', function() {
+    it('should handle skipping specific dates', function () {
         $startDate = new DateTime('2020-01-06');
         $endDate = new DateTime('2020-01-13');
 
         expect(getDiff($startDate, $endDate, [1, 2, 3, 4, 5], ['2020-01-07']))->toBe(4);
     });
 
-    it('should handle skipping yearly repeating dates', function() {
+    it('should handle skipping yearly repeating dates', function () {
         $startDate = new DateTime('2020-01-06');
         $endDate = new DateTime('2020-01-13');
 
         expect(getDiff($startDate, $endDate, [1, 2, 3, 4, 5], ['*-01-07']))->toBe(4);
     });
 
-    it('should handle combing all the things', function() {
+    it('should handle combing all the things', function () {
         $startDate = new DateTime('2020-01-06');
         $endDate = new DateTime('2020-01-13');
 
         expect(getDiff($startDate, $endDate, [1, 2, 3, 4, 5], ['2020-01-08', '*-01-07']))->toBe(3);
     });
 
-    it('should handle skipping the defined start and/or end dates', function() {
+    it('should handle skipping the defined start and/or end dates', function () {
         $startDate = new DateTime('2020-01-06');
         $endDate = new DateTime('2020-01-13');
 
         expect(getDiff($startDate, $endDate, [1, 2, 3, 4, 5], ['2020-01-06', '*-01-13']))->toBe(4);
     });
 
-    it('should handle many many tasks', function() {
+    it('should handle many many tasks', function () {
         $startDate = new DateTime('2020-01-01');
         $endDate = new DateTime('2020-12-31');
 
@@ -123,5 +123,27 @@ describe('DayDifference', function() {
         for ($i = 1; $i <= 3000; $i++) {
             expect(getDiff($startDate, $endDate, [2], [$holidays[0]]))->toBe(52);
         }
+    });
+
+    it('should set and get cache', function () {
+        $cache = [1578268800 => ["1", "2020-01-06", "*-01-06"], 1578355200 => ["2", "2020-01-07", "*-01-07"]];
+        DayDifference::set_cache($cache);
+
+        expect(DayDifference::get_cache())->toBe($cache);
+    });
+
+    it('should set cache when a cache miss', function () {
+        expect(DayDifference::get_cache())->not->toBe([1578268800 => ["1", "2020-01-06", "*-01-06"], 1578355200 => ["2", "2020-01-07", "*-01-07"], 1578441600 => ["3", "2020-01-08", "*-01-08"]]);
+
+        $startDate = new DateTime('2020-01-06');
+        $endDate = new DateTime('2020-01-09');
+
+        expect(getDiff($startDate, $endDate, [1, 2, 3, 4, 5], ['*-01-07']))->toBe(2);
+        expect(DayDifference::get_cache())->toBe([1578268800 => ["1", "2020-01-06", "*-01-06"], 1578355200 => ["2", "2020-01-07", "*-01-07"], 1578441600 => ["3", "2020-01-08", "*-01-08"]]);
+    });
+
+    it('should persist cache across new instances', function () {
+        $cache = [1578268800 => ["1", "2020-01-06", "*-01-06"], 1578355200 => ["2", "2020-01-07", "*-01-07"], 1578441600 => ["3", "2020-01-08", "*-01-08"]];
+        expect(DayDifference::get_cache())->toBe($cache);
     });
 });
